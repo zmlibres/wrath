@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY target/wrath.jar app.jar
 EXPOSE 8080
