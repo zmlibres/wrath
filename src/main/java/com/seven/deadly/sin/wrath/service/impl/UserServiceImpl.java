@@ -38,17 +38,17 @@ public class UserServiceImpl implements UserService {
         Page<User> users = userRepository.findAllByStatus(Status.ACTIVE, pageable);
 
         List<UserResultDTO> usersContent = users.getContent()
-                .stream()
-                .map(UserServiceImpl::buildUserDTO)
-                .toList();
+                                                .stream()
+                                                .map(UserServiceImpl::buildUserDTO)
+                                                .toList();
 
         return PageResponseDTO.<UserResultDTO>builder()
-                .content(usersContent)
-                .page(users.getNumber())
-                .size(users.getSize())
-                .totalPages(users.getTotalPages())
-                .totalElements(users.getTotalElements())
-                .build();
+                            .content(usersContent)
+                            .page(users.getNumber())
+                            .size(users.getSize())
+                            .totalPages(users.getTotalPages())
+                            .totalElements(users.getTotalElements())
+                            .build();
     }
 
 
@@ -68,10 +68,12 @@ public class UserServiceImpl implements UserService {
     public String saveUser(UserDTO request) {
 
         getUserByUsername(request.getUsername()).ifPresent(u -> {
-            throw new ResourceExistException("username already exist.");
+            throw new ResourceExistException(
+                    String.format("username '%s' already exist.", u.getUsername())
+            );
         });
 
-        String id = UUID.randomUUID().toString();
+        final String id = UUID.randomUUID().toString();
 
         userRepository.save(User.builder()
                                 .userId(id)
@@ -84,7 +86,6 @@ public class UserServiceImpl implements UserService {
 
         return id;
     }
-
 
     @CachePut(value = "user", key = "#id")
     @CacheEvict(value = "users", allEntries = true)
