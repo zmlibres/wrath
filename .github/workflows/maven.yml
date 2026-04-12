@@ -20,7 +20,6 @@ permissions:
   actions: read
   security-events: write
   id-token: write
-  dependency-graph: write
 
 jobs:
   build:
