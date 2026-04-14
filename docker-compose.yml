@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   app:
     image: zmlibres/wrath:latest
@@ -7,7 +6,7 @@ services:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3308/wrath
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/wrath
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_REDIS_HOST: redis
@@ -15,7 +14,6 @@ services:
     depends_on:
       - mysql
       - redis
-
   mysql:
     image: mysql:8.0
     environment:
@@ -23,7 +21,6 @@ services:
       MYSQL_DATABASE: wrath
     ports:
       - "3308:3306"
-
   redis:
     image: redis:7
     ports:
