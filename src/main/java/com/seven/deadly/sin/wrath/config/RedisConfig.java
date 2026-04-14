@@ -18,23 +18,17 @@ import java.time.Duration;
 @Configuration
 @EnableCaching
 public class RedisConfig {
-
-
+    
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
-
-        // Configure ObjectMapper for JSON serialization
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        // Use GenericJackson2JsonRedisSerializer with custom ObjectMapper
-        GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(objectMapper);
-
         return RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(10))
                 .disableCachingNullValues()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer));
+                .serializeValuesWith(
+                        RedisSerializationContext.SerializationPair.fromSerializer(
+                                new GenericJackson2JsonRedisSerializer()
+                        )
+                );
     }
 
     @Bean
