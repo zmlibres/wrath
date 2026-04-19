@@ -1,30 +1,40 @@
 package com.seven.deadly.sin.wrath.config;
 
+import com.seven.deadly.sin.wrath.security.jwt.JwtAuthFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/*
-    SecurityContextPersistenceFilter
-            ↓
-    BasicAuthenticationFilter
-            ↓
-    AuthorizationFilter
-            ↓
-    DispatcherServlet
-*/
-
-//@Configuration
-//@EnableWebSecurity
+@Configuration
+@EnableWebSecurity
 public class SecurityConfig {
-//
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//        http.csrf(csrf -> csrf.disable()) // disable csrf
-//                .authorizeHttpRequests(auth ->
-//                        auth.anyRequest().authenticated() //add authorizationFilter — require authentication in security context
-//                )
-//                .httpBasic(Customizer.withDefaults()); // add BasicAuthenticationFilter — reads Authorization: Basic xxx
-//
-//        return http.build();
-//    }
-//
+
+    private final JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(csrf ->
+                        csrf.disable())
+                            .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeHttpRequests(auth ->
+                        auth.requestMatchers("/auth/**").permitAll()
+                            .requestMatchers("/v1/user/**").permitAll()
+                            .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 }
