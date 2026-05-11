@@ -62,7 +62,11 @@ public class JwtService {
     }
 
     public boolean isAccessToken(String token) {
-        return ACCESS.equals(extractClaim(token, c -> c.get("type", String.class)));
+        return ACCESS.equals(extractClaim(
+                        token, c ->
+                                c.get("type", String.class)
+                )
+        );
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {

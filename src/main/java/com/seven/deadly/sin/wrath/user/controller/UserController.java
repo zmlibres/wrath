@@ -17,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-
 @RestController
 @RequestMapping("/v1/user")
 public class UserController {

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface AuthenticationService {
     LoginResponse login(LoginRequest request);
 
-    String signUp(@RequestBody LoginRequest request);
+    String signUp(LoginRequest request);
 
     String refreshToken(String refreshToken);
 }
