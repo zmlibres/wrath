@@ -2,6 +2,7 @@ package com.seven.deadly.sin.wrath.auth.service.impl;
 
 import com.seven.deadly.sin.wrath.auth.dto.request.LoginRequest;
 import com.seven.deadly.sin.wrath.auth.dto.response.LoginResponse;
+import com.seven.deadly.sin.wrath.common.exception.UnauthorizedException;
 import com.seven.deadly.sin.wrath.security.service.CustomUserDetails;
 import com.seven.deadly.sin.wrath.security.jwt.JwtService;
 import com.seven.deadly.sin.wrath.auth.service.AuthenticationService;
@@ -66,8 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                 .refreshExpiresIn(REFRESH_EXPIRATION)
                                 .build();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+            throw new UnauthorizedException(e.getMessage());
         }
 
     }

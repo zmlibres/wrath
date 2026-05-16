@@ -21,6 +21,11 @@ public class CustomExceptionHandler {
         return buildException(e, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedException(UnauthorizedException e) {
+        return buildException(e, HttpStatus.UNAUTHORIZED);
+    }
+
     private ResponseEntity<ErrorResponse> buildException(RuntimeException e, HttpStatus status) {
 
         return ResponseEntity.status(status)

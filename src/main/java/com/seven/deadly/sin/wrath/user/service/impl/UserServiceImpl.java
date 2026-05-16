@@ -32,11 +32,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final CustomUserDetailsService customUserDetailsService;
-
     private final UserCredentialsRepository userCredentialsRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository,
                            UserCredentialsRepository userCredentialsRepository,
@@ -44,7 +42,6 @@ public class UserServiceImpl implements UserService {
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userCredentialsRepository = userCredentialsRepository;
-        this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
 
